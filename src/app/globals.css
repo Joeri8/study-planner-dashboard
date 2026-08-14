@@ -1,26 +1,54 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.pageLayout {
+  min-height: 100vh;
+  display: flex;
+  background: #f5f7fb;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.pageContent {
+  flex: 1;
+  min-width: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.pageContent main {
+  padding: 32px;
+}
+
+@media (max-width: 768px) {
+  .pageLayout {
+    flex-direction: column;
   }
+
+  .pageContent main {
+    padding: 20px;
+  }
+}.taskCard {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  max-width: 650px;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.taskCard h2 {
+  margin-top: 0;
+}
+
+.taskActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.taskActions a,
+.taskActions button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #9ca3af;
+  background: white;
+  color: #111827;
+}
+
+.taskActions a {
+  text-decoration: none;
 }
