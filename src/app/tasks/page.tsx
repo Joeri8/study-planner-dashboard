@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import TaskCard from "@/components/tasks/TaskCard";
+import SearchBar from "@/components/tasks/SearchBar";
+import FilterBar from "@/components/tasks/FilterBar";
 
 type Task = {
   _id: string;
@@ -18,6 +20,8 @@ type Task = {
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   async function fetchTasks() {
     try {
@@ -66,6 +70,20 @@ export default function TasksPage() {
     }
   }
 
+  const filteredTasks = tasks.filter((task) => {
+    const searchText = search.toLowerCase();
+
+    const matchesSearch =
+      task.title.toLowerCase().includes(searchText) ||
+      task.subject.toLowerCase().includes(searchText);
+
+    const matchesStatus =
+      statusFilter === "all" ||
+      task.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <div className="pageLayout">
       <Sidebar />
@@ -78,6 +96,16 @@ export default function TasksPage() {
             <h1>Tasks</h1>
             <p>Manage your study tasks and deadlines.</p>
 
+            <SearchBar
+              value={search}
+              onChange={setSearch}
+            />
+
+            <FilterBar
+              value={statusFilter}
+              onChange={setStatusFilter}
+            />
+
             {loading && <p>Loading tasks...</p>}
 
             {!loading && tasks.length === 0 && (
@@ -85,7 +113,13 @@ export default function TasksPage() {
             )}
 
             {!loading &&
-              tasks.map((task) => (
+              tasks.length > 0 &&
+              filteredTasks.length === 0 && (
+                <p>No tasks match your search or filter.</p>
+              )}
+
+            {!loading &&
+              filteredTasks.map((task) => (
                 <TaskCard
                   key={task._id}
                   task={task}
