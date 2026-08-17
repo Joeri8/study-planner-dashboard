@@ -52,3 +52,41 @@
 .taskActions a {
   text-decoration: none;
 }
+
+.pageTitle {
+  margin-bottom: 24px;
+}
+
+.pageTitle h1 {
+  margin: 0 0 8px;
+}
+
+.pageTitle p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.commonButton {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+.commonButton:hover {
+  background: #374151;
+}
+
+.commonButton:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.commonCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+}
