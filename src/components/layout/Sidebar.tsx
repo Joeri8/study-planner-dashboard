@@ -1,6 +1,19 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
+  const router = useRouter();
+
+  async function handleLogout() {
+    await fetch("/api/logout", {
+      method: "POST",
+    });
+
+    router.push("/login");
+  }
+
   return (
     <aside className="sidebar">
       <div>
@@ -24,7 +37,11 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      <button type="button" className="logoutButton">
+      <button
+        type="button"
+        className="logoutButton"
+        onClick={handleLogout}
+      >
         Logout
       </button>
     </aside>
