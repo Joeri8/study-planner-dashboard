@@ -1,3 +1,8 @@
+"use client";
+
+import TextSizeToggle from "@/components/common/TextSizeToggle";
+import ThemeToggle from "@/components/common/ThemeToggle";
+
 export default function Header() {
   return (
     <header className="header">
@@ -7,8 +12,8 @@ export default function Header() {
       </div>
 
       <div className="headerActions">
-        <button type="button">A+</button>
-        <button type="button">Dark mode</button>
+        <TextSizeToggle />
+        <ThemeToggle />
       </div>
     </header>
   );

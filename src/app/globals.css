@@ -138,3 +138,57 @@
   border-radius: 6px;
   font-size: 16px;
 }
+
+/* Accessibility settings */
+
+.appSettings {
+  min-height: 100vh;
+}
+
+.appSettings.light {
+  background: #f5f7fb;
+  color: #111827;
+}
+
+.appSettings.dark {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.appSettings.dark .pageLayout,
+.appSettings.dark .pageContent {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.appSettings.dark .header,
+.appSettings.dark .commonCard,
+.appSettings.dark .taskCard {
+  background: #1f2937;
+  color: #f9fafb;
+  border-color: #374151;
+}
+
+.appSettings.dark input,
+.appSettings.dark select,
+.appSettings.dark textarea {
+  background: #111827;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.appSettings.dark .pageTitle p,
+.appSettings.dark .headerLabel {
+  color: #d1d5db;
+}
+
+.appSettings.largeText {
+  font-size: 1.2rem;
+}
+
+.appSettings.largeText button,
+.appSettings.largeText input,
+.appSettings.largeText select,
+.appSettings.largeText textarea {
+  font-size: 1.1rem;
+}
