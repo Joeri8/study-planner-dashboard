@@ -22,6 +22,7 @@ type SettingsProviderProps = {
   children: ReactNode;
 };
 
+// Hanterar dark mode och textstorlek för hela appen
 export function SettingsProvider({
   children,
 }: SettingsProviderProps) {

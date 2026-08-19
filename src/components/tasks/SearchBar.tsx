@@ -11,6 +11,8 @@ export default function SearchBar({
   value,
   onChange,
 }: SearchBarProps) {
+ 
+  // Referens till sökfältet så vi kan sätta fokus på det.
   const inputRef = useRef<HTMLInputElement>(null);
 
   function focusSearch() {
