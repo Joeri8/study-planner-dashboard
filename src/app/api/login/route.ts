@@ -14,6 +14,7 @@ export async function POST(request: Request) {
       password,
     });
 
+    //om email redan finns visa ett felmeddelande
     if (!user) {
       return NextResponse.json(
         {
@@ -26,11 +27,13 @@ export async function POST(request: Request) {
       );
     }
 
+    //om email finns, skapa en cookie och skicka tillbaka ett svar
     const response = NextResponse.json({
       success: true,
       message: "Login successful",
     });
 
+    //sätter en cookie och gör den tillänglig för hela webbplatsen
     response.cookies.set("loggedIn", "true", {
       httpOnly: true,
       path: "/",
