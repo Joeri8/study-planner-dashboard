@@ -29,6 +29,7 @@ export default function TasksPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
+  // Tar bort en task efter att användaren har bekräftat
   const handleDelete = useCallback(
     async (id: string) => {
       const confirmed = window.confirm(
@@ -58,6 +59,7 @@ export default function TasksPage() {
     [setTasks]
   );
 
+  // Filtrerar och sorterar tasks beroende på sökning och val.
   const filteredTasks = useMemo(() => {
     const searchText = search.toLowerCase();
 

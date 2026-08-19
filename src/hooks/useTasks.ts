@@ -12,6 +12,7 @@ type Task = {
   dueDate: string;
 };
 
+// Hämtar tasks från API:t och håller koll på loading
 export default function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
