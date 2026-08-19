@@ -6,7 +6,9 @@ import Header from "@/components/layout/Header";
 import TaskCard from "@/components/tasks/TaskCard";
 import SearchBar from "@/components/tasks/SearchBar";
 import FilterBar from "@/components/tasks/FilterBar";
+import SortSelect from "@/components/tasks/SortSelect";
 import useTasks from "@/hooks/useTasks";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 type Task = {
   _id: string;
@@ -19,42 +21,47 @@ type Task = {
 };
 
 export default function TasksPage() {
+  useDocumentTitle("Tasks");
+
   const { tasks, setTasks, loading } = useTasks();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
 
-  
-  const handleDelete = useCallback(async (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this task?"
-    );
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this task?"
+      );
 
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/tasks/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Could not delete task");
+      if (!confirmed) {
+        return;
       }
 
-      setTasks((currentTasks) =>
-        currentTasks.filter((task) => task._id !== id)
-      );
-    } catch (error) {
-      console.error("Could not delete task:", error);
-    }
-  }, []);
+      try {
+        const response = await fetch(`/api/tasks/${id}`, {
+          method: "DELETE",
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not delete task");
+        }
+
+        setTasks((currentTasks) =>
+          currentTasks.filter((task) => task._id !== id)
+        );
+      } catch (error) {
+        console.error("Could not delete task:", error);
+      }
+    },
+    [setTasks]
+  );
 
   const filteredTasks = useMemo(() => {
     const searchText = search.toLowerCase();
 
-    return tasks.filter((task) => {
+    const result = tasks.filter((task) => {
       const matchesSearch =
         task.title.toLowerCase().includes(searchText) ||
         task.subject.toLowerCase().includes(searchText);
@@ -65,7 +72,35 @@ export default function TasksPage() {
 
       return matchesSearch && matchesStatus;
     });
-  }, [tasks, search, statusFilter]);
+
+    return [...result].sort((a, b) => {
+      if (sortBy === "dueDate") {
+        return (
+          new Date(a.dueDate).getTime() -
+          new Date(b.dueDate).getTime()
+        );
+      }
+
+      if (sortBy === "priority") {
+        const priorityOrder: Record<string, number> = {
+          high: 1,
+          medium: 2,
+          low: 3,
+        };
+
+        return (
+          (priorityOrder[a.priority] ?? 99) -
+          (priorityOrder[b.priority] ?? 99)
+        );
+      }
+
+      if (sortBy === "oldest") {
+        return a._id.localeCompare(b._id);
+      }
+
+      return b._id.localeCompare(a._id);
+    });
+  }, [tasks, search, statusFilter, sortBy]);
 
   return (
     <div className="pageLayout">
@@ -87,6 +122,11 @@ export default function TasksPage() {
             <FilterBar
               value={statusFilter}
               onChange={setStatusFilter}
+            />
+
+            <SortSelect
+              value={sortBy}
+              onChange={setSortBy}
             />
 
             {loading && <p>Loading tasks...</p>}
