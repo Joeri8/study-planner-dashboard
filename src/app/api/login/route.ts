@@ -39,6 +39,12 @@ export async function POST(request: Request) {
       path: "/",
     });
 
+    //cookie med säkerhetsinställning för Userid
+    response.cookies.set("userId", user._id.toString(), {
+      httpOnly: true,
+      path: "/",
+    });
+
     return response;
   } catch (error) {
     console.error(error);

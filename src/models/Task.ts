@@ -28,6 +28,10 @@ const TaskSchema = new Schema(
       type: Date,
       required: true,
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
   },
   {
     timestamps: true,
