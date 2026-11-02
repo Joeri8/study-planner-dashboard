@@ -14,13 +14,17 @@ export async function GET() {
     }
 
     await connectDB();
-    const user = await User.findById(userId).select("name email");
+    const user = await User.findById(userId).select("name email avatar");
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ name: user.name, email: user.email });
+    return NextResponse.json({
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar || "",
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -40,7 +44,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: "Not logged in" }, { status: 401 });
     }
 
-    const { name, email } = await request.json();
+    const { name, email, avatar } = await request.json();
 
     if (
       typeof name !== "string" ||
@@ -51,6 +55,18 @@ export async function PUT(request: Request) {
     ) {
       return NextResponse.json(
         { message: "Enter a name and a valid email address" },
+        { status: 400 }
+      );
+    }
+
+    // En liten bild sparas som text tillsammans med profilen.
+    if (
+      typeof avatar !== "string" ||
+      avatar.length > 1400000 ||
+      (avatar !== "" && !/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(avatar))
+    ) {
+      return NextResponse.json(
+        { message: "Choose a JPG, PNG or WebP image, maximum 1 MB" },
         { status: 400 }
       );
     }
@@ -76,11 +92,13 @@ export async function PUT(request: Request) {
 
     user.name = name.trim();
     user.email = email.trim();
+    user.avatar = avatar;
     await user.save();
 
     return NextResponse.json({
       name: user.name,
       email: user.email,
+      avatar: user.avatar,
       message: "Profile saved!",
     });
   } catch (error) {
