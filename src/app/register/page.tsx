@@ -1,17 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import LinkButton from "@/components/common/LinkButton";
+import Card from "@/components/common/Card";
 import Button from "@/components/common/Button";
 import PageTitle from "@/components/common/PageTitle";
 import { useRouter } from "next/navigation";
+import InputField from "@/components/common/InputField";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  
 
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -41,58 +42,46 @@ export default function RegisterPage() {
 
   return (
     <main>
-      <div>
+      <Card>
         <PageTitle
           title="Register"
           description="Create your Study Planner account."
         />
 
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="name">Name</label>
+          <InputField
+            id="name"
+            label="Name"
+            type="text"
+            value={name}
+            onChange={setName}
+          />
 
-            <input
-              id="name"
-              type="text"
-              name="name"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </div>
+          <InputField
+            id="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={setEmail}
+          />
 
-          <div>
-            <label htmlFor="email">Email</label>
-
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password">Password</label>
-
-            <input
-              id="password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
+          <InputField
+            id="password"
+            label="Password"
+            type="password"
+            value={password}
+            onChange={setPassword}
+          />
 
           <Button type="submit">
             Create account
           </Button>
         </form>
 
-        <Link href="/login">
+        <LinkButton href="/login">
           Already have an account? Login
-        </Link>
-      </div>
+        </LinkButton>
+      </Card>
     </main>
   );
 }

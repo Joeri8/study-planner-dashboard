@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import LinkButton from "@/components/common/LinkButton";
+import Card from "@/components/common/Card";
 import Button from "@/components/common/Button";
 import PageTitle from "@/components/common/PageTitle";
 import { useRouter } from "next/navigation";
+import InputField from "@/components/common/InputField";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -38,50 +40,41 @@ export default function LoginPage() {
     }
   }
 
-  
 
   return (
     <main>
-      <div>
+      <Card>
         <PageTitle
           title="Login"
           description="Log in to your Study Planner."
         />
 
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email</label>
+          <InputField
+            id="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={setEmail}
+          />
 
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password">Password</label>
-
-            <input
-              id="password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
+          <InputField
+            id="password"
+            label="Password"
+            type="password"
+            value={password}
+            onChange={setPassword}
+          />
 
           <Button type="submit">
             Log in
           </Button>
         </form>
 
-        <Link href="/register">
+        <LinkButton href="/register">
           Register now
-        </Link>
-      </div>
+        </LinkButton>
+      </Card>
     </main>
   );
 }

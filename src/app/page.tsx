@@ -1,4 +1,6 @@
-import Link from "next/link";
+import LinkButton from "@/components/common/LinkButton";
+import ThemeToggle from "@/components/common/ThemeToggle";
+import TextSizeToggle from "@/components/common/TextSizeToggle";
 import Card from "@/components/common/Card";
 import PageTitle from "@/components/common/PageTitle";
 import Sidebar from "@/components/layout/Sidebar";
@@ -10,15 +12,19 @@ export default function Home() {
 
       <div className="pageContent">
         <main className="homePage">
+          <div className="headerActions">
+            <TextSizeToggle />
+            <ThemeToggle />
+          </div>
           <section className="heroSection">
             <PageTitle
               title="Study Planner"
               description="Plan your projects, manage your tasks and stay on track."
             />
 
-            <Link href="/login" className="commonButton">
+            <LinkButton href="/login">
               Get started
-            </Link>
+            </LinkButton>
           </section>
 
           <section className="homeFeatures">

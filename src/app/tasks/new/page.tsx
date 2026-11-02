@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
+import Button from "@/components/common/Button";
+import PageTitle from "@/components/common/PageTitle";
+import InputField from "@/components/common/InputField";
 
 export default function NewTaskPage() {
   const router = useRouter();
@@ -58,20 +61,17 @@ export default function NewTaskPage() {
 
         <main>
           <section>
-            <h1>Create new task</h1>
-            <p>Add a new study task.</p>
+            <PageTitle title="Create new task" description="Add a new study task." />
 
             <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="title">Title</label>
-                <input
-                  id="title"
-                  type="text"
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                  required
-                />
-              </div>
+              <InputField
+                id="title"
+                label="Title"
+                type="text"
+                value={title}
+                onChange={setTitle}
+                required
+              />
 
               <div>
                 <label htmlFor="description">Description</label>
@@ -82,16 +82,14 @@ export default function NewTaskPage() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="subject">Subject</label>
-                <input
-                  id="subject"
-                  type="text"
-                  value={subject}
-                  onChange={(event) => setSubject(event.target.value)}
-                  required
-                />
-              </div>
+              <InputField
+                id="subject"
+                label="Subject"
+                type="text"
+                value={subject}
+                onChange={setSubject}
+                required
+              />
 
               <div>
                 <label htmlFor="priority">Priority</label>
@@ -119,20 +117,18 @@ export default function NewTaskPage() {
                 </select>
               </div>
 
-              <div>
-                <label htmlFor="dueDate">Due date</label>
-                <input
-                  id="dueDate"
-                  type="date"
-                  value={dueDate}
-                  onChange={(event) => setDueDate(event.target.value)}
-                  required
-                />
-              </div>
+              <InputField
+                id="dueDate"
+                label="Due date"
+                type="date"
+                value={dueDate}
+                onChange={setDueDate}
+                required
+              />
 
               {error && <p>{error}</p>}
 
-              <button type="submit">Create task</button>
+              <Button type="submit">Create task</Button>
             </form>
           </section>
         </main>

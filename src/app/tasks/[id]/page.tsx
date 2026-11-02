@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
+import Button from "@/components/common/Button";
+import PageTitle from "@/components/common/PageTitle";
+import InputField from "@/components/common/InputField";
 
 type Task = {
   _id: string;
@@ -93,24 +96,17 @@ export default function EditTaskPage() {
 
         <main>
           <section>
-            <h1>Edit task</h1>
+            <PageTitle title="Edit task" />
 
             <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="title">Title</label>
-                <input
-                  id="title"
-                  type="text"
-                  value={task.title}
-                  onChange={(event) =>
-                    setTask({
-                      ...task,
-                      title: event.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
+              <InputField
+                id="title"
+                label="Title"
+                type="text"
+                value={task.title}
+                onChange={(value) => setTask({ ...task, title: value })}
+                required
+              />
 
               <div>
                 <label htmlFor="description">Description</label>
@@ -126,21 +122,14 @@ export default function EditTaskPage() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="subject">Subject</label>
-                <input
-                  id="subject"
-                  type="text"
-                  value={task.subject}
-                  onChange={(event) =>
-                    setTask({
-                      ...task,
-                      subject: event.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
+              <InputField
+                id="subject"
+                label="Subject"
+                type="text"
+                value={task.subject}
+                onChange={(value) => setTask({ ...task, subject: value })}
+                required
+              />
 
               <div>
                 <label htmlFor="priority">Priority</label>
@@ -178,27 +167,20 @@ export default function EditTaskPage() {
                 </select>
               </div>
 
-              <div>
-                <label htmlFor="dueDate">Due date</label>
-                <input
-                  id="dueDate"
-                  type="date"
-                  value={task.dueDate.slice(0, 10)}
-                  onChange={(event) =>
-                    setTask({
-                      ...task,
-                      dueDate: event.target.value,
-                    })
-                  }
-                  required
-                />
-              </div>
+              <InputField
+                id="dueDate"
+                label="Due date"
+                type="date"
+                value={task.dueDate.slice(0, 10)}
+                onChange={(value) => setTask({ ...task, dueDate: value })}
+                required
+              />
 
               {error && <p>{error}</p>}
 
-              <button type="submit">
+              <Button type="submit">
                 Save changes
-              </button>
+              </Button>
             </form>
           </section>
         </main>

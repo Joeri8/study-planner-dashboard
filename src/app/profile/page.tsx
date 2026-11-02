@@ -1,21 +1,79 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import PageTitle from "@/components/common/PageTitle";
 import Card from "@/components/common/Card";
 import Button from "@/components/common/Button";
+import InputField from "@/components/common/InputField";
 
 export default function ProfilePage() {
-  const [name, setName] = useState("Student User");
-  const [email, setEmail] = useState("student@example.com");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  function handleSave(event: React.FormEvent<HTMLFormElement>) {
+  const [loading, setLoading] = useState(true);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const response = await fetch("/api/profile");
+        const data = await response.json();
+
+        if (!response.ok) {
+          setMessage(data.message);
+          return;
+        }
+
+        setName(data.name);
+        setEmail(data.email);
+        setProfileLoaded(true);
+      } catch (error) {
+        console.error(error);
+        setMessage("Could not load profile. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProfile();
+  }, []);
+
+  async function handleSave(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    setMessage("Profile saved!");
+    if (saving) {
+      return;
+    }
+
+    setSaving(true);
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setName(data.name);
+        setEmail(data.email);
+      }
+
+      setMessage(data.message);
+    } catch (error) {
+      console.error(error);
+      setMessage("Could not save profile. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -32,37 +90,36 @@ export default function ProfilePage() {
           />
 
           <Card>
-            <form onSubmit={handleSave}>
-              <div>
-                <label htmlFor="name">Name</label>
+            {loading && <p>Loading profile...</p>}
 
-                <input
+            {profileLoaded && (
+              <form onSubmit={handleSave}>
+                <InputField
                   id="name"
+                  label="Name"
                   type="text"
                   value={name}
-                  onChange={(event) => setName(event.target.value)}
+                  onChange={setName}
                   required
                 />
-              </div>
 
-              <div>
-                <label htmlFor="email">Email</label>
-
-                <input
+                <InputField
                   id="email"
+                  label="Email"
                   type="email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={setEmail}
                   required
                 />
-              </div>
 
-              <Button type="submit">
-                Save profile
-              </Button>
+                <Button type="submit">
+                  {saving ? "Saving..." : "Save profile"}
+                </Button>
 
-              {message && <p>{message}</p>}
-            </form>
+              </form>
+            )}
+
+            {message && <p aria-live="polite">{message}</p>}
           </Card>
         </main>
       </div>
