@@ -23,28 +23,11 @@ export default function TaskCard({
 }: TaskCardProps) {
   return (
     <article className="taskCard">
-      <h2>{task.title}</h2>
-
-      <p>{task.description}</p>
-
-      <p>
-        <strong>Subject:</strong> {task.subject}
-      </p>
-
-      <p>
-        <strong>Priority:</strong> {task.priority}
-      </p>
-
-      <p>
-        <strong>Status:</strong> {task.status}
-      </p>
-
-      <p>
-        <strong>Due:</strong>{" "}
-        {task.dueDate
-          ? new Date(task.dueDate).toLocaleDateString()
-          : "No due date"}
-      </p>
+      <h2>
+        <Link href={`/tasks/${task._id}/details`}>
+          {task.title}
+        </Link>
+      </h2>
 
       <div className="taskActions">
         <Link href={`/tasks/${task._id}`}>
