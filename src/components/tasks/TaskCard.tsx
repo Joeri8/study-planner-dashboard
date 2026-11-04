@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -48,6 +49,10 @@ export default function TaskCard({
 
       <div className="taskActions">
         <Link href={`/tasks/${task._id}`}>
+          View details
+        </Link>
+
+        <Link href={`/tasks/${task._id}/edit`}>
           Edit
         </Link>
 
